@@ -8,7 +8,8 @@ IF(!@($Credentials)) {$Credentials = Get-credential } ; IF(!@($ADMIN)) {$ADMIN =
 Try { Connect-ExchangeOnline -Credential $Credentials -EA stop } catch { Connect-ExchangeOnline -UserPrincipalName $ADMIN } }
 
 
-Try {$MBX = get-mailbox $user -EA stop } catch { $user = read-host "enter user to check" ; $MBX = get-mailbox $user }
+Try {$MBX = get-mailbox $user -EA stop } 
+catch { $user = read-host "enter user to check" ; $MBX = get-mailbox $user }
 
 [array]$groups = Get-UnifiedGroup -ResultSize unlimited
 
