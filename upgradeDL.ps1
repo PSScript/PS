@@ -36,7 +36,7 @@ $Path = [Environment]::GetFolderPath('MyDocuments')
 
 $DL | Export-Csv -Path "$Path\DL_$($DL.Name).csv" -NoTypeInformation -Encoding UTF8 -Force ; $DL
 
-$Members = Get-DistributionGroupMember –Identity $DL.distinguishedname –ResultSize Unlimited
+$Members = Get-DistributionGroupMember -Identity $DL.distinguishedname -ResultSize Unlimited
 $Members | Export-Csv -Path "$Path\exportDL_$($DL.Name).csv" -NoTypeInformation -Encoding UTF8
 $Members | select *name*,alias,pri*,GUID | Export-Csv -Path "$Path\exportDLshort.csv" -NoTypeInformation -Encoding UTF8 -Force
 
