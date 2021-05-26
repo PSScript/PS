@@ -1,3 +1,12 @@
+# CONNECT Exchange Online
+# [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+# Register-PSRepository -Default
+# install-module ExchangeOnlineManagement -SkipPublisherCheck
+# install-module -name PowershellGet -Force -SkipPublisherCheck
+# Uninstall-Module PowershellGet -MaximumVersion "1.0.0.1" -Force -Confirm:$false -EA stop
+
+ IF (!(get-accepteddomain -EA silentlycontinue)) { Connect-ExchangeOnline }
+
 # (1) Follow Group in Inbox + enable Subscription              - [ISSUE: Emails only in Group Mailbox + (2) = "don't get emails"]
 # (2) Un-hide from Addresslist and Outlook/OWA                 - [ISSUE: Teams Groups invible in Outlook/OWA]
 # (3) Add Owners as Members = make Visible in OWA for Owners   - [ISSUE: created in Admincenter disappear for owners]
