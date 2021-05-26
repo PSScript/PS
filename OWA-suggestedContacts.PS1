@@ -5,7 +5,8 @@
 # install-module -name PowershellGet -Force -SkipPublisherCheck
 # Uninstall-Module PowershellGet -MaximumVersion "1.0.0.1" -Force -Confirm:$false -EA stop
 
- IF (!(get-accepteddomain -EA silentlycontinue)) { Connect-ExchangeOnline }
+IF (!(Get-PSSession | where { "Microsoft.Exchange" -eq $_.ConfigurationName -and ( "Opened" -eq $_.State -or "Available" -eq $_.Availability ) })) 
+{ Connect-ExchangeOnline }
 
 $Cfg = @"
 Configuration\IPM.Configuration.Suite.Storage;
@@ -22,7 +23,7 @@ Configuration\IPM.Configuration.Relevance.PeopleIndexBuilderModel
 "@
 
 $Mbxs = try { get-EXOmailbox -ResultSize unlimited } catch { get-mailbox -ResultSize unlimited }
-[System.Collections.ArrayList]$MBX = @($mbxs | select use*e,disp*e,Pr*ess | ogv -P -T "Select to clear Cache").userprincipalname ;
+[System.Collections.ArrayList]$MBX = [Array]($mbxs | select use*e,disp*e,Pr*ess | ogv -P -T "Select to clear Cache").userprincipalname ;
 $count= $MBX.count; $time = [system.diagnostics.stopwatch]::startNew() ; for ($M = 0; $M -lt $MBX.count ) {
 $C1 = @(get-MailboxUserConfiguration -Mailbox $MBX[$M] -Identity "Configuration\*").identity
 $C2  = $C1 | where { $_ -in $Cfg.Split(';') } ; Foreach ($C in $C2) {
